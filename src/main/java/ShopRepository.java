@@ -1,3 +1,4 @@
+import ru.netology.exceptions.AlreadyExistsException;
 import ru.netology.exceptions.NotFoundException;
 
 public class ShopRepository {
@@ -13,6 +14,12 @@ public class ShopRepository {
     }
 
     public void add(Product product) {
+        int e = product.getId();
+        if (findById(e) != null) {
+            throw new AlreadyExistsException(
+                    "Вы не можете добавить товар с id: " + e + ", он уже есть в репозитории."
+            );
+        }
         products = addToArray(products, product);
     }
 

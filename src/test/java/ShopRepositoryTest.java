@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.netology.exceptions.AlreadyExistsException;
 import ru.netology.exceptions.NotFoundException;
 
 public class ShopRepositoryTest {
@@ -32,6 +33,26 @@ public class ShopRepositoryTest {
     public void exceptionIfNotFoundId() {
         Assertions.assertThrows(NotFoundException.class, () -> {
             repo.removeById(4);
+        });
+    }
+
+    @Test
+    public void addNewProduct() {
+        Product item4 = new Product(4, "Сахар", 63);
+        repo.add(item4);
+
+        Product[] expected = {item1, item2, item3, item4};
+        Product[] actual = repo.findAll();
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void exceptionIfAddMatchProduct() {
+        Product item5 = new Product(3, "Кефир", 80);
+
+        Assertions.assertThrows(AlreadyExistsException.class, () -> {
+            repo.add(item5);
         });
     }
 }
